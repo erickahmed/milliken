@@ -1,15 +1,14 @@
-import time
 from vehicle_model import Vehicle
 
-def run_simulation(dt, steps):
-    vehicle = Vehicle(x=0, y=0, velocity=0, theta=0.5)
+def run_simulation(dt, steps, initial_x, initial_y, initial_velocity, initial_theta):
+    vehicle = Vehicle(initial_x, initial_y, initial_velocity, initial_theta)
 
     positions = []
     speeds = []
 
     for step in range(steps):
         acceleration = 2
-        omega = 0.05
+        omega = 0
 
         vehicle.update(acceleration, omega, dt)
 
@@ -17,4 +16,5 @@ def run_simulation(dt, steps):
         positions.append((vehicle.x, vehicle.y))
         speeds.append(vehicle.velocity)
 
+        print(vehicle.x, end='\n')
     return positions, speeds
