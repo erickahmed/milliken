@@ -1,24 +1,39 @@
-import matplotlib.pyplot as plt
+import plotly.graph_objs as go
+import plotly.express as px
 
+# TODO: Separate each type of graph generation into a separate function?
 def analyze_vehicle_data(positions, speeds):
 
     # Plot position as XY coordinates
-    plt.figure(figsize=(10, 6))
-    plt.subplot(2, 1, 1)  # Position plot
+    position_graph = go.Figure()
+
+    # Adding Position Trace
     x, y = zip(*positions)
-    plt.plot(x, y, label='Path', color='b')
-    plt.title('Vehicle Path')
-    plt.xlabel('X Coordinate [m]')
-    plt.ylabel('Y Coordinate [m]')
-    plt.legend()
+    position_graph.add_trace(go.Scatter(x=x, y=y, mode='lines', name='Path', line=dict(color='blue')))
 
-    # Plot speed vs time
-    plt.subplot(2, 1, 2)  # Speed plot
-    plt.plot(speeds, label='Speed [m/s]', color='r')
-    plt.title('Vehicle Speed Over Time')
-    plt.xlabel('Time [s]')
-    plt.ylabel('Speed [m/s]')
-    plt.legend()
+    # Set title and labels for position plot
+    position_graph.update_layout(
+        title='Vehicle Path',
+        xaxis_title='X Coordinate [m]',
+        yaxis_title='Y Coordinate [m]',
+        showlegend=True
+    )
+    # Save position plot as HTML
+    position_graph.write_html("../data/vehicle_path.html")
 
-    plt.tight_layout()
-    plt.show()
+    # Create a subplot for the speed vs time plot
+    speed_graph = go.Figure()
+
+    # Adding Speed Trace
+    speed_graph.add_trace(go.Scatter(y=speeds, mode='lines', name='Speed [m/s]', line=dict(color='red')))
+
+    # Set title and labels for speed plot
+    speed_graph.update_layout(
+        title='Vehicle Speed Over Time',
+        xaxis_title='Time [s]',
+        yaxis_title='Speed [m/s]',
+        showlegend=True
+    )
+
+    # Save speed plot as HTML
+    speed_graph.write_html("../data/vehicle_speed.html")
