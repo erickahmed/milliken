@@ -1,22 +1,23 @@
 import matplotlib.pyplot as plt
 
 def analyze_vehicle_data(positions, speeds):
-    """Analyze and plot vehicle data."""
-    # Plot position vs time (you can customize this for other data analysis)
+
+    # Plot position as XY coordinates
     plt.figure(figsize=(10, 6))
     plt.subplot(2, 1, 1)  # Position plot
-    plt.plot(positions, label='Position (m)', color='b')
-    plt.title('Vehicle Position Over Time')
-    plt.xlabel('Time (seconds)')
-    plt.ylabel('Position (meters)')
+    x, y = zip(*positions)
+    plt.plot(x, y, label='Path', color='b')
+    plt.title('Vehicle Path')
+    plt.xlabel('X Coordinate [m]')
+    plt.ylabel('Y Coordinate [m]')
     plt.legend()
 
     # Plot speed vs time
     plt.subplot(2, 1, 2)  # Speed plot
-    plt.plot(speeds, label='Speed (m/s)', color='r')
+    plt.plot(speeds, label='Speed [m/s]', color='r')
     plt.title('Vehicle Speed Over Time')
-    plt.xlabel('Time (seconds)')
-    plt.ylabel('Speed (m/s)')
+    plt.xlabel('Time [s]')
+    plt.ylabel('Speed [m/s]')
     plt.legend()
 
     plt.tight_layout()

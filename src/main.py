@@ -1,5 +1,5 @@
 from simulate import run_simulation
-from analyze import analyze_vehicle_data
+from visualize import analyze_vehicle_data
 
 # Run the simulation
 positions, speeds = run_simulation(dt=0.01, steps=5000)
