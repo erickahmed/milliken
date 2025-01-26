@@ -1,0 +1,59 @@
+# Python files
+*.py text eol=lf
+*.pyi text eol=lf
+
+# Rust files
+*.rs text eol=lf
+
+# Virtual Environment directories
+venv/* binary
+.env/* binary
+.venv/* binary
+
+# Database files (Python/SQLite)
+*.sqlite3 binary
+*.db binary
+
+# Log files
+*.log binary
+
+# Compiled binary files
+*.so binary
+*.dylib binary
+*.exe binary
+*.dll binary
+
+# 3D CAD files
+*.step binary
+*.stp binary
+*.iges binary
+*.igs binary
+*.3dm binary
+*.obj binary
+*.fbx binary
+*.sat binary
+
+# Text files (force line endings to LF for consistency)
+*.txt text eol=lf
+*.md text eol=lf
+*.rst text eol=lf
+
+# IDE and editor files (binary as they contain project settings)
+*.sublime-project binary
+*.sublime-workspace binary
+.idea/* binary
+.vscode/* binary
+
+# Archive files (e.g., zip, tar)
+*.tar binary
+*.gz binary
+*.zip binary
+
+# Ignore temporary or backup files
+*~ binary
+*.bak binary
+
+# Set specific merge strategies for binary files (if needed)
+*.png binary merge=union
+*.jpg binary merge=union
+*.gif binary merge=union
