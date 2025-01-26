@@ -1,19 +1,48 @@
-### Vehicle Model for the Racing Manager game. This is a prototype in Python.
-### The final model should be written in a compiled langauge for faster execution.
-### This first version in a kinematic model.
+### This is a prototype in Python.
+### The final vehicle model should be written in a compiled langauge for faster execution.
+### This first version is a kinematic model.
 
+import sqlite3
 import math
+import os
 
-# x,y,z are the space coordinate of the vehicle, theta is  its the heading angle
 class Vehicle:
-    def __init__(self, x=0, y=0, velocity =0, theta=0):
+    def __init__(self, x, y, velocity, theta, steering_angle, vehicle_name):
         self.x = x
         self.y = y
         self.velocity = velocity
         self.theta = theta
+        self.steering_angle = steering_angle
 
-# acceleration and speed of the vehicle, omega is the angular speed, dt is the time step
+        # Load vehicle parameters from the vehicle-specific database
+        self.load_vehicle_params(vehicle_name)
+
+    def load_vehicle_params(self, vehicle_name):
+        # Construct the path to the vehicle's specific database
+        db_path = os.path.join('../db/vehicles/', vehicle_name, 'vehicle_specs.db')
+
+        if not os.path.exists(db_path):
+            raise FileNotFoundError(f"Database for vehicle '{vehicle_name}' not found at {db_path}.")
+
+        # Open the SQLite database that stores vehicle specifications
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+
+        # Query the database for the vehicle's parameters (mass, wheelbase, inertia)
+        cursor.execute('''
+            SELECT mass, wheelbase, inertia FROM vehicle_specs WHERE name = ?
+        ''', (vehicle_name,))
+
+        row = cursor.fetchone()
+        if row:
+            self.mass, self.wheelbase, self.inertia = row
+        else:
+            raise ValueError(f"Vehicle '{vehicle_name}' not found in the database.")
+
+        conn.close()
+
     def update(self, acceleration, omega, dt):
+        # Update the vehicle's position and velocity based on input acceleration and angular velocity (omega)
         self.velocity += acceleration * dt
         self.theta += omega * dt
 
