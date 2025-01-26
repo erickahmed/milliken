@@ -12,6 +12,7 @@ __pycache__/
 dist/
 build/
 *.egg
+pyvenv.cfg
 
 # Rust
 target/
@@ -26,6 +27,11 @@ Cargo.toml.orig
 venv/
 .env/
 .venv/
+bin/
+etc/
+lib/
+share/
+CACHEDIR.TAG
 
 # IDEs and Editors
 .vscode/
