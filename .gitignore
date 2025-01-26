@@ -1,5 +1,41 @@
-# created by virtualenv automatically
-/bin
-/CACHEDIR.TAG 
-/lib
-pyvenv.cfg
+# Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.db
+*.sqlite3
+*.log
+*.bak
+*.swp
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Rust
+target/
+Cargo.lock
+Cargo.toml.orig
+*.rs.bk
+*.so
+*.dylib
+*.exe
+
+# Virtual Environment (venv)
+venv/
+.env/
+.venv/
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.iml
+
+# MacOS system files
+.DS_Store
+
+# Linux system files
+*~
