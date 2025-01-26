@@ -3,11 +3,11 @@ from vehicle_model import Vehicle
 # TODO: make user choose between step-based, time-based simulation and unlimited time simulation
 def run_simulation(dt, steps, initial_x, initial_y,
         initial_velocity, initial_theta, initial_steering_angle,
-        vehicle_name):
+        vehicle_name, version_number):
     # Create a vehicle instance with parameters loaded from its specific database
     vehicle = Vehicle(initial_x, initial_y,
                       initial_velocity, initial_theta, initial_steering_angle,
-                      vehicle_name)
+                      vehicle_name, version_number)
 
     positions = []
     speeds = []

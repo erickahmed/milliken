@@ -7,19 +7,17 @@ import math
 import os
 
 class Vehicle:
-    def __init__(self, x, y, velocity, theta, steering_angle, vehicle_name):
+    def __init__(self, x, y, velocity, theta, steering_angle, vehicle_name, version_number):
         self.x = x
         self.y = y
         self.velocity = velocity
         self.theta = theta
         self.steering_angle = steering_angle
 
-        # Load vehicle parameters from the vehicle-specific database
-        self.load_vehicle_params(vehicle_name)
+        self.load_vehicle_params(vehicle_name, version_number)
 
-    def load_vehicle_params(self, vehicle_name):
-        # Construct the path to the vehicle's specific database
-        db_path = os.path.join('../db/vehicles/', vehicle_name, 'vehicle_specs.db')
+    def load_vehicle_params(self, vehicle_name, version_number):
+        db_path = os.path.join('../db/vehicles/', vehicle_name, version_number, 'parameters.db')
 
         if not os.path.exists(db_path):
             raise FileNotFoundError(f"Database for vehicle '{vehicle_name}' not found at {db_path}.")

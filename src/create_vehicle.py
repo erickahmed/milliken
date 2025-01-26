@@ -1,13 +1,13 @@
 import sqlite3
 import os
 
-def create_vehicle_database(vehicle_name, mass, wheelbase, inertia):
+def create_vehicle_database(vehicle_name, version_name, mass, wheelbase, inertia):
     # Create a folder for the vehicle if it doesn't exist
-    folder_path = os.path.join('../db/vehicles/', vehicle_name)
+    folder_path = os.path.join('../db/vehicles/', vehicle_name, version_name)
     os.makedirs(folder_path, exist_ok=True)
 
     # Path to the vehicle-specific database
-    db_path = os.path.join(folder_path, 'vehicle_specs.db')
+    db_path = os.path.join(folder_path, 'parameters.db')
 
     # Connect to the SQLite database (it will create the database if it doesn't exist)
     conn = sqlite3.connect(db_path)
@@ -34,4 +34,5 @@ def create_vehicle_database(vehicle_name, mass, wheelbase, inertia):
 
 
 if __name__ == "__main__":
-    create_vehicle_database()
+    create_vehicle_database(vehicle_name, version_name,
+                            mass, wheelbase, inertia)
