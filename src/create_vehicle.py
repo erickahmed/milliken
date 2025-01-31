@@ -1,9 +1,12 @@
 import sqlite3
 import os
+import argparse
 
-def create_vehicle_database(vehicle_name, version_name, mass, wheelbase, inertia):
+def create_vehicle_database(vehicle_name, vehicle_version, mass, wheelbase, inertia,
+                           steering_ratio):
+
     # Create a folder for the vehicle if it doesn't exist
-    folder_path = os.path.join('../db/vehicles/', vehicle_name, version_name)
+    folder_path = os.path.join('../db/vehicles/', vehicle_name, vehicle_version)
     os.makedirs(folder_path, exist_ok=True)
 
     # Path to the vehicle-specific database
@@ -23,16 +26,82 @@ def create_vehicle_database(vehicle_name, version_name, mass, wheelbase, inertia
     )
     ''')
 
+    # Create the table for tire specs if it doesn't exist
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS tire_specs (
+        vehicle_name TEXT,
+        steering_ratio REAL,
+        FOREIGN KEY(vehicle_name) REFERENCES vehicle_specs(name)
+    )
+    ''')
+
     # Insert vehicle specifications into the database
     cursor.execute('''
     INSERT OR REPLACE INTO vehicle_specs (name, mass, wheelbase, inertia)
     VALUES (?, ?, ?, ?)
     ''', (vehicle_name, mass, wheelbase, inertia))
 
+    # Insert tire specifications into the database
+    cursor.execute('''
+    INSERT OR REPLACE INTO tire_specs (
+        vehicle_name,
+        steering_ratio
+    )
+    VALUES (?, ?, ?, ?, ?, ?)
+    ''', (
+        vehicle_name,
+        steering_ratio
+    ))
+
     conn.commit()
     conn.close()
-
+    print(f"Database created successfully at {db_path}")
 
 if __name__ == "__main__":
-    create_vehicle_database(vehicle_name, version_name,
-                            mass, wheelbase, inertia)
+    parser = argparse.ArgumentParser(description="Create a vehicle database with specifications.")
+
+    # Vehicle parameters
+    parser.add_argument('vehicle_name', type=str, help='Vehicle name')
+    parser.add_argument('vehicle_version', type=str, help='Vehicle version or setup type')
+    parser.add_argument('mass', type=float, help='Mass of the vehicle')
+    parser.add_argument('wheelbase', type=float, help='Wheelbase of the vehicle')
+    parser.add_argument('inertia', type=float, help='Inertia of the vehicle')
+
+    # Tire parameter
+
+    # Static toe angles
+    parser.add_argument('steering_ratio', type=float, default=0, help='Static toe angle Front Left')
+
+    args = parser.parse_args()
+
+    create_vehicle_database(
+        vehicle_name=args.vehicle_name,
+        vehicle_version=args.vehicle_version,
+        mass=args.mass,
+        wheelbase=args.wheelbase,
+        inertia=args.inertia,
+        steering_ratio=args.steering_ratio,
+    )
+
+
+# FIXME: no hardcoded values
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Create a vehicle database with specifications.")
+
+    parser.add_argument('vehicle_name', type=str, help='Name of the vehicle')
+    parser.add_argument('vehicle_version', type=str, help='Version of the vehicle')
+    parser.add_argument('mass', type=float, help='Mass of the vehicle')
+    parser.add_argument('wheelbase', type=float, help='Wheelbase of the vehicle')
+    parser.add_argument('inertia', type=float, help='Inertia of the vehicle')
+    parser.add_argument('steering_ratio', type=float, help='Steering to wheel turning ratio')
+
+
+    args = parser.parse_args()
+    create_vehicle_database(
+        vehicle_name=args.vehicle_name,
+        vehicle_version=args.vehicle_version,
+        mass=args.mass,
+        wheelbase=args.wheelbase,
+        inertia=args.inertia,
+        steering_ratio=args.steering_ratio,
+    )
