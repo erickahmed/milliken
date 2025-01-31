@@ -5,18 +5,16 @@ import argparse
 def create_vehicle_database(vehicle_name, vehicle_version, mass, wheelbase, inertia,
                            steering_ratio):
 
-    # Create a folder for the vehicle if it doesn't exist
     folder_path = os.path.join('../db/vehicles/', vehicle_name, vehicle_version)
     os.makedirs(folder_path, exist_ok=True)
 
-    # Path to the vehicle-specific database
+    # Path to the vehicle database
     db_path = os.path.join(folder_path, 'parameters.db')
 
-    # Connect to the SQLite database (it will create the database if it doesn't exist)
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
 
-    # Create the table for vehicle specs if it doesn't exist
+    # DB for vehicle specs
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS vehicle_specs (
         name TEXT PRIMARY KEY,
@@ -26,7 +24,7 @@ def create_vehicle_database(vehicle_name, vehicle_version, mass, wheelbase, iner
     )
     ''')
 
-    # Create the table for tire specs if it doesn't exist
+    # DB for tire specs
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS tire_specs (
         vehicle_name TEXT,
@@ -50,6 +48,10 @@ def create_vehicle_database(vehicle_name, vehicle_version, mass, wheelbase, iner
     VALUES (?, ?, ?, ?, ?, ?)
     ''', (
         vehicle_name,
+        mass,
+        wheelbase,
+        inertia,
+        vehicle_name,
         steering_ratio
     ))
 
@@ -67,13 +69,10 @@ if __name__ == "__main__":
     parser.add_argument('wheelbase', type=float, help='Wheelbase of the vehicle')
     parser.add_argument('inertia', type=float, help='Inertia of the vehicle')
 
-    # Tire parameter
-
-    # Static toe angles
+    # Steering parameters
     parser.add_argument('steering_ratio', type=float, default=0, help='Static toe angle Front Left')
 
     args = parser.parse_args()
-
     create_vehicle_database(
         vehicle_name=args.vehicle_name,
         vehicle_version=args.vehicle_version,
@@ -94,7 +93,6 @@ if __name__ == "__main__":
     parser.add_argument('wheelbase', type=float, help='Wheelbase of the vehicle')
     parser.add_argument('inertia', type=float, help='Inertia of the vehicle')
     parser.add_argument('steering_ratio', type=float, help='Steering to wheel turning ratio')
-
 
     args = parser.parse_args()
     create_vehicle_database(
