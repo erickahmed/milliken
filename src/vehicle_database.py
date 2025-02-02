@@ -59,6 +59,9 @@ def create(vehicle_name, vehicle_version, mass, wheelbase, cog_x, cog_y, cog_z, 
 
 def load(vehicle_name, vehicle_version, *parameters):
     db_path = os.path.join('../db/vehicles/', vehicle_name, vehicle_version, 'parameters.db')
+    if not os.path.exists(db_path):
+        raise FileNotFoundError(f"Database for vehicle '{vehicle_name}' not found at {db_path}.")
+
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
 
